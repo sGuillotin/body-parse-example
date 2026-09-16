@@ -28,7 +28,41 @@ const getUsers = (request, response) => {
 };
 
 const addUser = (request, response) => {
+  
+  const responseJSON = {
+    message: "Name and age are both required"
+  };
+  
+  const {name, age} = request.body;
+  
+  if(!name || !age){
+    responseJSON.id = 'Missing params';
+    return respondJSON(request, response, 400, responseJSON);  
+  }
 
+  let statusCode = 204; //"successful but we're not gonna return anything"
+
+
+  // set the name
+  if(!users[name]){
+    statusCode = 201; //created
+    users[name] = {
+      name:name
+    }
+  }
+
+  // set the age
+  users[name].age = age;
+
+  if(statusCode === 201){ // if user created
+    responseJSON.message = "User successfully created";
+    return respondJSON(request, response, statusCode, responseJSON);
+  }
+
+  // return 204 (no need to send body out = we can sen an empty object back out)
+  return respondJSON(request, response, statusCode, {});
+
+  console.log(`name ${name}, age ${age}`);
 };
 
 module.exports = {
