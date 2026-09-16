@@ -12,6 +12,7 @@ const respondJSON = (request, response, status, object) => {
     'Content-Length': Buffer.byteLength(content, 'utf8'),
   });
 
+  // add &&  status not equal to 204
   if(request.method !== 'HEAD') {
     response.write(JSON.stringify(object));
   }
